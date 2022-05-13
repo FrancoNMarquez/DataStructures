@@ -312,22 +312,24 @@ public class ArbolGen {
         listarPosordenAux(this.raiz,salida);
         return salida;
     }
-    private void listarPosordenAux(NodoGen n, Lista ls) {
-        if (n != null) {
-            if (n.getHijoIzquierdo() != null) {
-                NodoGen hijo = n.getHijoIzquierdo().getHermanoDerecho();
+    private void listarPosordenAux(NodoGen nodo, Lista lista) {
+        if (nodo != null) {
+            if (nodo.getHijoIzquierdo() != null) {
+                // Llamado recursivo con HEI
+                listarPosordenAux(nodo.getHijoIzquierdo(), lista);
+
+                NodoGen hijo = nodo.getHijoIzquierdo().getHermanoDerecho();
+
                 while (hijo != null) {
-                    listarInordenAux(hijo, ls);
+                    // Llamado recursivo con HD. mirando desde el padre
+                    listarPosordenAux(hijo, lista);
+
+                    // avanzo sobre los hermanos mirando desde el padre
                     hijo = hijo.getHermanoDerecho();
                 }
-
             }
-            if (n.getHijoIzquierdo() != null) {
-                listarInordenAux(n.getHijoIzquierdo(), ls);
-
-            }
-            //visita del nodo n
-            ls.insertar(n.getElem(), ls.longitud() + 1);
+            // inserto el elemento al final de la lista
+            lista.insertar(nodo.getElem(), lista.longitud() + 1);
 
         }
     }
@@ -354,15 +356,18 @@ public class ArbolGen {
 
         }
     }
+
     public Lista listarPorNiveles() {
         Lista lista = new Lista();
+        int i = 1;
         if (this.raiz != null) {
             Cola cola = new Cola();
             NodoGen nodo, hijo;
             cola.poner(this.raiz);
             while (!cola.esVacia()) {
                 nodo = (NodoGen) cola.obtenerFrente();
-                lista.insertar(nodo.getElem(), 1);
+                lista.insertar(nodo.getElem(), i);
+                i++;
                 cola.sacar();
                 hijo = nodo.getHijoIzquierdo();
                 while (hijo != null) {
@@ -370,9 +375,7 @@ public class ArbolGen {
                     hijo = hijo.getHermanoDerecho();
                 }
             }
-
         }
-
         return lista;
     }
     public String toString(){
@@ -423,9 +426,6 @@ public class ArbolGen {
         }
         return existe;
     }*/
-    //private boolean verificarPatronAux(NodoGen nodo, Lista ls){
-
-    //}
 
     public Lista frontera(){
         Lista ls = new Lista();
@@ -448,14 +448,65 @@ public class ArbolGen {
             }
         }
     }
-    public Lista listaQueVerificaLaAltura(){
-           Lista ls = new Lista();
-           if(!esVacio()){
-               listaQueVerificaLaAlturaAux(this.raiz,ls);
-           }
-           return ls;
+ /* public boolean verificarPatron(Lista lisPatron){
+        boolean existe=false;
+        if(!this.esVacio()){
+            existe=verificarPatronAux(this.raiz,lisPatron); // pasar posicion o eliminar en la lista y solo pregunto por la posicion 1, y si vuelvo lo pongo de nuevo
+        }
+        return existe;
     }
-    private void listaQueVerificaLaAlturaAux(NodoGen nodo,Lista ls){
+    //private boolean verificarPatronAux(NodoGen nodo, Lista ls){
 
+    //} */
+
+    public Lista listaQueVerificaLaAltura() {
+        Lista listaADevolver = new Lista();
+        Lista listaClon = new Lista();
+        if (!esVacio()) {
+            verificarAux(this.raiz,listaClon,listaADevolver);
+        }
+        return listaADevolver;
+    }
+    private void verificarAux(NodoGen nodo,Lista caminoActual,Lista caminoMasLargo) {
+        //retorno la lista mas larga
+        //Si el camino actual es mas largo que el camino mas largo, lo clono y devuelvo el mas largo
+    }
+
+    public boolean sonFrontera(Lista ls) {
+        boolean exito;
+        if (ls.esVacia() || this.esVacio()) {
+            exito = false;
+        } else {
+            exito = sonFronteraAux(this.raiz, ls);
+        }
+        return exito;
+    }
+
+    private boolean sonFronteraAux(NodoGen nodo, Lista ls) {
+        boolean exito = false;
+        //while(!ls.esVacia()){
+        if (!ls.esVacia()) {
+            if (nodo != null) {
+                if (nodo.getHijoIzquierdo() != null) {
+                    NodoGen sig = nodo.getHijoIzquierdo();
+                    while (sig != null) {
+                        exito = sonFronteraAux(sig, ls);
+                        sig = sig.getHermanoDerecho();
+                    }
+                } else {
+                    //es hoja
+                    int pos = ls.localizar(nodo.getElem());
+                    if (pos != -1) {
+                        ls.eliminar(pos);
+                    }
+
+                }
+            }
+        }
+        if (ls.esVacia()) {
+            exito = true;
+        }
+        return exito;
     }
 }
+
