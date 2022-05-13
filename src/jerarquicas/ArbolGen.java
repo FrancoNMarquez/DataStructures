@@ -56,7 +56,12 @@ public class ArbolGen {
         return res;
     }
     //pertenece
-    public boolean pertenece(Object buscado){
+
+    //pertenece (TipoElemento):boolean
+    public boolean pertenece(Object b) {
+        return (obtenerNodo(this.raiz, b) != null);
+    }
+  /*  public boolean pertenece(Object buscado){
         boolean existe=false;
         if((this.raiz!=null)&&(buscado!=null)){
             existe=perteneceAux(this.raiz,buscado);
@@ -90,7 +95,7 @@ public class ArbolGen {
         }
 
         return  pertenece;
-    }
+    }*/
     /*  version 2021
     private boolean perteneceAux(NodoGen nodoActual, Object buscado){
 
@@ -190,7 +195,7 @@ public class ArbolGen {
     }*/
 
     //nivel
-    public int nivel(Object buscado){
+   /* public int nivel(Object buscado){
         // Devuelve el nivel de un elemento en el árbol. Si el elemento no existe en el árbol devuelve -1
         int elNivel=-1;
         if(!esVacio()){
@@ -220,12 +225,38 @@ public class ArbolGen {
         nivelMax = Math.max(nivelHermano,nivelHijo);
 
         return nivelMax;
+    } */
+
+    // metodo de Coti
+       public int nivel(Object b) {
+        int niv;
+        niv = buscarNivel(this.raiz, b, -1);
+        return niv;
     }
+
+    private int buscarNivel(NodoGen n, Object b, int niv) {
+        if (n != null) {
+            if (n.getElem().equals(b)) {
+                niv++;
+            } else {
+                niv = buscarNivel(n.getHijoIzquierdo(), b, niv);
+                if (niv == -1) {
+                    niv = buscarNivel(n.getHermanoDerecho(), b, niv);
+                } else {
+                    niv++;
+                }
+            }
+        }
+        return niv;
+    }
+
     //padre
     public Object padre(Object buscado){
         Object elPadre=null;
         if(!esVacio()){
-            elPadre=padreAux(this.raiz,buscado);
+            if (!this.raiz.getElem().equals(buscado)) {
+                elPadre = padreAux(this.raiz, buscado);
+            }
         }
         return elPadre;
     }
@@ -247,8 +278,7 @@ public class ArbolGen {
         }
         return res;
     }
-    //listar
-    //clone
+
     public void vaciar(){
         this.raiz=null;
     }
@@ -342,6 +372,7 @@ public class ArbolGen {
             }
 
         }
+
         return lista;
     }
     public String toString(){
@@ -384,5 +415,47 @@ public class ArbolGen {
             nuevo.setHermanoDerecho(cloneAux(nodo.getHermanoDerecho()));
         }
         return nuevo;
+    }
+    /*public boolean verificarPatron(Lista lisPatron){
+        boolean existe=false;
+        if(!this.esVacio()){
+            existe=verificarPatronAux(this.raiz,lisPatron); // pasar posicion o eliminar en la lista y solo pregunto por la posicion 1, y si vuelvo lo pongo de nuevo
+        }
+        return existe;
+    }*/
+    //private boolean verificarPatronAux(NodoGen nodo, Lista ls){
+
+    //}
+
+    public Lista frontera(){
+        Lista ls = new Lista();
+        if(!esVacio()){
+            fronteraAux(this.raiz,ls);
+        }
+        return ls;
+    }
+    private void fronteraAux(NodoGen nodo, Lista ls){
+
+        if(nodo!=null){
+            if(nodo.getHijoIzquierdo()!=null){
+                NodoGen sig = nodo.getHijoIzquierdo();
+                while(sig!=null){
+                    fronteraAux(sig,ls);
+                    sig=sig.getHermanoDerecho();
+                }
+            }else{
+                ls.insertar(nodo.getElem(),ls.longitud()+1);
+            }
+        }
+    }
+    public Lista listaQueVerificaLaAltura(){
+           Lista ls = new Lista();
+           if(!esVacio()){
+               listaQueVerificaLaAlturaAux(this.raiz,ls);
+           }
+           return ls;
+    }
+    private void listaQueVerificaLaAlturaAux(NodoGen nodo,Lista ls){
+
     }
 }
