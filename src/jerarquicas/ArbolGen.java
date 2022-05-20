@@ -55,60 +55,12 @@ public class ArbolGen {
         }
         return res;
     }
-    //pertenece
+
 
     //pertenece (TipoElemento):boolean
     public boolean pertenece(Object b) {
         return (obtenerNodo(this.raiz, b) != null);
     }
-  /*  public boolean pertenece(Object buscado){
-        boolean existe=false;
-        if((this.raiz!=null)&&(buscado!=null)){
-            existe=perteneceAux(this.raiz,buscado);
-        }
-
-        return existe;
-    }
-    private boolean perteneceAux(NodoGen nodo, Object buscado){
-        boolean pertenece=false;
-
-        if(nodo!=null){
-            if(nodo.getElem().equals(buscado)){
-                //si es el elem buscado
-                pertenece = true;
-            }else{
-                //pregunto si tiene hijos
-                if(nodo.getHijoIzquierdo()!=null){
-                  pertenece=perteneceAux(nodo.getHijoIzquierdo(),buscado);
-                }else{
-                    //si no tiene hijos, pregunto si tiene hermanos
-                    if(nodo.getHermanoDerecho()!=null){
-                        nodo=nodo.getHermanoDerecho();
-                        while ((nodo!=null)||(!pertenece)){
-                            pertenece=perteneceAux(nodo.getHermanoDerecho(),buscado);
-                            nodo=nodo.getHermanoDerecho();
-                        }
-                    }
-                }
-
-            }
-        }
-
-        return  pertenece;
-    }*/
-    /*  version 2021
-    private boolean perteneceAux(NodoGen nodoActual, Object buscado){
-
-        boolean existe=false;
-        if(nodoActual.getElem().equals(buscado)){
-            existe=true;
-        }else{
-            for(NodoGen hijo = nodoActual.getHijoIzquierdo(); !existe && hijo != null; hijo = hijo.getHermanoDerecho()){
-            existe=this.perteneceAux(hijo, buscado);
-        }
-        }
-        return existe;
-    }*/
 
     //ancestros
     public Lista ancestros(Object buscado){
@@ -127,7 +79,7 @@ public class ArbolGen {
             }else {
                 NodoGen hijo = nodo.getHijoIzquierdo();
                 while (hijo != null && !encontrado) {
-                    //recorro los hermanos , hasta terminar todos o encontrar el elemento
+                    //recorro los hermanos, hasta terminar todos o encontrar el elemento
                     encontrado = ancestrosAux(hijo, lista, elemento);
                     hijo = hijo.getHermanoDerecho();
                 }
@@ -180,54 +132,6 @@ public class ArbolGen {
         }
       return alturaMax;
     }
-   /* version 2021
-    public int altura() {
-        return alturaAux(this.raiz, -1);
-    }
-
-    private int alturaAux(NodoGen nodo, int altura) {
-        if (nodo != null) {
-            int n = alturaAux(nodo.getHijoIzquierdo(), altura + 1);
-            int m = alturaAux(nodo.getHermanoDerecho(), altura);
-            altura = (n > m) ? n : m;
-        }
-        return altura;
-    }*/
-
-    //nivel
-   /* public int nivel(Object buscado){
-        // Devuelve el nivel de un elemento en el árbol. Si el elemento no existe en el árbol devuelve -1
-        int elNivel=-1;
-        if(!esVacio()){
-            elNivel=nivelAux(this.raiz,buscado,0,false);
-        }
-        return  elNivel;
-    }
-    private int nivelAux(NodoGen nodo, Object buscado, int nivel,boolean encontrado){
-        int nivelMax = -1;
-        int nivelHijo=0;
-        int nivelHermano=0;
-        if(nodo!=null){
-            if(nodo.getElem().equals(buscado)){
-                encontrado = true;
-                nivelMax=0;
-            }else{
-                if(nodo.getHijoIzquierdo()!=null){
-                    nivelHijo= nivelAux(nodo.getHijoIzquierdo(),buscado,nivel+1,encontrado)+1;
-                }
-            }
-            NodoGen hermano = nodo.getHermanoDerecho();
-            while(!encontrado && hermano!=null){
-                nivelHermano= nivelAux(hermano,buscado,nivel,encontrado);
-                hermano=hermano.getHermanoDerecho();
-            }
-        }
-        nivelMax = Math.max(nivelHermano,nivelHijo);
-
-        return nivelMax;
-    } */
-
-    // metodo de Coti
        public int nivel(Object b) {
         int niv;
         niv = buscarNivel(this.raiz, b, -1);

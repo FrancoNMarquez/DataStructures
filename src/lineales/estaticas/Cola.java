@@ -27,13 +27,13 @@ public class Cola {
     public boolean poner(Object elem){
     boolean exito;
 
-        if((fin+1)%TAMANIO==frente){
+        if((this.fin+1)%TAMANIO==this.frente){
             //Si Esta lleno, no puedo poner mas elementos
             exito=false;
         }else{
             //Si no esta lleno, agrego un elemento a la cola
-            this.arreglo[fin]=elem;
-            fin=(fin+1)%TAMANIO;
+            this.arreglo[this.fin]=elem;
+            this.fin=(this.fin+1)%TAMANIO;
             exito=true;
         }
        return exito;

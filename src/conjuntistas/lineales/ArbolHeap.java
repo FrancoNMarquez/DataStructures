@@ -1,4 +1,4 @@
-package conjuntistas.estaticas;
+package conjuntistas.lineales;
 //Heap Minimo
 public class ArbolHeap {
     private final int TAMANIO = 10;

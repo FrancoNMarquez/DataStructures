@@ -1,6 +1,6 @@
 package lineales.test;
 import lineales.estaticas.Cola;
-// import lineales.dinamicas.Cola;
+ //import lineales.conjuntistas.dinamicas.Cola;
 public class TestingCola {
     static String sOk = "OK!", sErr = "ERROR";
 
