@@ -65,7 +65,7 @@ public class ArbolBB {
     }
     public boolean eliminar(Comparable elemento) {
         boolean exito = false;
-        if (this.raiz != null) {
+        if ((this.raiz != null)) {
             exito = eliminarAux(this.raiz, null, elemento);
         }
         return exito;
@@ -86,8 +86,8 @@ public class ArbolBB {
                 if (nodo.getDerecho() == null && nodo.getIzquierdo() == null) {
                     eliminarCaso1(padre, elem);
 
-                } else if (!(nodo.getDerecho() != null && nodo.getIzquierdo() != null)) {
-                    //tiene 1 solo hijo
+                } else if ((nodo.getDerecho() != null && nodo.getIzquierdo() != null)) {
+                    //tiene 2 solo hijo
                     eliminarCaso3(nodo);
 
                 } else {
@@ -102,6 +102,7 @@ public class ArbolBB {
         return exito;
     }
     private void eliminarCaso1(NodoABB nodo, Comparable elem) {
+        System.out.println("Eliminando en caso 1");
         //eliminar una hoja
         if (nodo.getDerecho() != null) {
             if (nodo.getDerecho().getElem().compareTo(elem) == 0) {
@@ -116,6 +117,7 @@ public class ArbolBB {
     }
     private void eliminarCaso2(NodoABB nodo, NodoABB padre, Comparable elem) {
         //eliminar nodo con 1 solo hijo
+        System.out.println("Eliminando en caso 2");
         if (padre.getElem().compareTo(nodo.getElem()) > 0) {
             //hijo izquierdo
             if (nodo.getDerecho() != null) {
@@ -134,6 +136,7 @@ public class ArbolBB {
     }
     private void eliminarCaso3(NodoABB nodo) {
         //eliminar nodo con 2 hijos
+        System.out.println("Eliminando en caso 3");
         NodoABB candidato = nodo.getIzquierdo();
         NodoABB padreCandidato = nodo;
         // obtengo el mayor del subarbol izquierdo
@@ -252,6 +255,23 @@ public class ArbolBB {
             laCadena+="\n"+toStringAux(nodo.getIzquierdo())+toStringAux(nodo.getDerecho());
         }
         return laCadena;
+    }
+    public void vaciar(){
+        this.raiz=null;
+    }
+    @Override
+    public ArbolBB clone() {
+        ArbolBB nuevo = new ArbolBB();
+        nuevo.raiz = clonarAux(this.raiz);
+        return nuevo;
+    }
+
+    private NodoABB clonarAux(NodoABB aux) {
+        NodoABB hijo = null;
+        if (aux != null) {
+            hijo = new NodoABB(aux.getElem(), clonarAux(aux.getDerecho()), clonarAux(aux.getIzquierdo()));
+        }
+        return hijo;
     }
 }
 //
