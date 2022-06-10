@@ -4,6 +4,8 @@ import lineales.dinamicas.Cola;
 import lineales.dinamicas.Lista;
 import lineales.dinamicas.Nodo;
 
+import java.util.List;
+
 public class ArbolGen {
     private NodoGen raiz;
 
@@ -412,5 +414,59 @@ public class ArbolGen {
         }
         return exito;
     }
+    public boolean verificarCamino(Lista lista){
+        boolean correcto=false;
+        if(!this.esVacio()){
+            correcto=verificarCaminoAux(this.raiz,lista);
+        }
+        return correcto;
+    }
+    private boolean verificarCaminoAux(NodoGen nodo,Lista ls) {
+        boolean correcto=false;
+        if(nodo!=null){
+            if(nodo.getElem().equals(ls.recuperar(1))){
+                //SI el nodo en el que estoy es parte del camino
+                ls.eliminar(1);
+                if(!ls.esVacia()){
+                    correcto=verificarCaminoAux(nodo.getHijoIzquierdo(),ls);
+                }
+            }else {
+                NodoGen hermano = nodo.getHermanoDerecho();
+                while(hermano!=null){
+                    if(hermano.getElem().equals(ls.recuperar(1))){
+                        verificarCaminoAux(hermano,ls);
+                    }
+                    hermano = hermano.getHermanoDerecho();
+                }
+            }
+            if(ls.esVacia()){
+                correcto=true;
+            }
+        }
+        return correcto;
+    }
+    public Lista listarEntreNiveles(int niv1, int niv2){
+        Lista ls = new Lista();
+        return listarAux(this.raiz,ls,niv1,niv2,0);
+    }
+    private Lista listarAux(NodoGen nodo, Lista ls, int niv1, int niv2, int nivActual){
+        if(nodo!=null){
+            if(nodo.getHijoIzquierdo()!=null && nivActual>=niv1 && nivActual>=niv2){
+                listarAux(nodo.getHijoIzquierdo(),ls,niv1,niv2,nivActual+1);
+            }
+            if(nivActual>=niv1 && nivActual>niv2){
+                ls.insertar(nodo.getElem(),ls.longitud()+1);
+            }
+            if(nodo.getHijoIzquierdo()!=null&&nivActual<=niv2){
+                NodoGen hijo = nodo.getHijoIzquierdo().getHermanoDerecho();
+                while (hijo!=null){
+                    listarAux(hijo,ls,niv1,niv2,nivActual+1);
+                    hijo=hijo.getHermanoDerecho();
+                }
+            }
+        }
+        return ls;
+    }
+
 }
 

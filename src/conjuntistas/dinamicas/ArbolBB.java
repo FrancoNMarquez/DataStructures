@@ -1,6 +1,6 @@
 package conjuntistas.dinamicas;
 
-import jerarquicas.NodoArbol;
+import jerarquicas.NodoGen;
 import lineales.dinamicas.Lista;
 import lineales.dinamicas.Nodo;
 
@@ -270,6 +270,40 @@ public class ArbolBB {
         NodoABB hijo = null;
         if (aux != null) {
             hijo = new NodoABB(aux.getElem(), clonarAux(aux.getDerecho()), clonarAux(aux.getIzquierdo()));
+        }
+        return hijo;
+    }
+
+    public void eliminarMinimo(){
+        eliminarMinimoAux(this.raiz,null);
+    }
+    private void eliminarMinimoAux(NodoABB nodo, NodoABB padre){
+        if(nodo!=null){
+            if(nodo.getIzquierdo()!=null){
+                //Si tengo mas hijos, no soy el minimo
+                eliminarMinimoAux(nodo.getIzquierdo(),nodo);
+            }else{
+                //estoy en el nodo minimo
+                if(nodo.getDerecho()!=null){
+                    //Es el nodo minimo pero tengo una rama por la derecha
+                    padre.setIzquierdo(nodo.getDerecho());
+                }else{
+                    //Es el nodo minimo y no tiene ramas por la derecha
+                    padre.setIzquierdo(null);
+                }
+            }
+        }
+    }
+    public ArbolBB clonarParteInvertida() {
+        ArbolBB nuevo = new ArbolBB();
+        nuevo.raiz = clonarParteInvertidaAux(this.raiz);
+        return nuevo;
+    }
+
+    private NodoABB clonarParteInvertidaAux(NodoABB aux) {
+        NodoABB hijo = null;
+        if (aux != null) {
+            hijo = new NodoABB(aux.getElem(), clonarParteInvertidaAux(aux.getIzquierdo()),clonarParteInvertidaAux(aux.getDerecho()));
         }
         return hijo;
     }

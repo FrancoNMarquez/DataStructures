@@ -18,8 +18,11 @@ public class TestABB {
         //System.out.println(arbol.listar());
       //  System.out.println("Maximo:"+arbol.maximoElem());
         //System.out.println("Minimo:"+arbol.minimoElem());
-        System.out.println("Elimino el 8 \n");
-        arbol.eliminar(8);
-        System.out.println(arbol.toString());
+       //arbol.eliminarMinimo();
+       // arbol.eliminarMinimo();
+       // System.out.println(arbol.toString());
+        ArbolBB arbolClon = arbol.clone();
+
+        System.out.println(arbolClon.toString());
     }
 }

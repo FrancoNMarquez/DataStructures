@@ -1,7 +1,5 @@
 package conjuntistas.dinamicas;
 
-import lineales.dinamicas.Nodo;
-
 public class NodoABB {
     private Comparable elem;
     private NodoABB izquierdo;
